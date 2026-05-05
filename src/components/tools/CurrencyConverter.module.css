@@ -54,6 +54,7 @@
 
 .input {
   flex: 1;
+  min-width: 0;
   padding: 10px 12px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -71,6 +72,7 @@
 
 .result {
   flex: 1;
+  min-width: 0;
   padding: 10px 12px;
   background: var(--color-primary-light);
   border-radius: var(--radius-sm);
