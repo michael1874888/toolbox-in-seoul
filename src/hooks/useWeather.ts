@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import type { WeatherDay, WeatherHour } from '../types';
 import { weatherFallback } from '../data/weather-fallback';
 
-const CACHE_KEY = 'seoul-weather-v1';
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+const CACHE_KEY = 'seoul-weather-v2';
+const CACHE_TTL_MS = 3 * 60 * 60 * 1000;
+
+// jma_seamless = JMA 無縫合體模型，東亞降雨預測精度優於 ECMWF/GFS 全球模型
 const API_URL =
   'https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.978' +
   '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode' +
   '&hourly=temperature_2m,precipitation_probability,weathercode' +
-  '&timezone=Asia%2FSeoul&start_date=2026-05-09&end_date=2026-05-13';
+  '&timezone=Asia%2FSeoul&start_date=2026-05-09&end_date=2026-05-13' +
+  '&models=jma_seamless';
 
 interface CacheEntry {
   data: WeatherDay[];
@@ -62,35 +65,59 @@ export interface WeatherState {
   isFallback: boolean;
 }
 
+async function fetchWeather(): Promise<WeatherDay[]> {
+  const r = await fetch(API_URL);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const json = (await r.json()) as Record<string, unknown>;
+  if (!json.daily || !json.hourly) throw new Error('Invalid API response shape');
+  return parseApiResponse(json);
+}
+
 export function useWeather(): WeatherState {
-  const cached = loadCache();
-  const [state, setState] = useState<WeatherState>({
-    days: cached?.data ?? weatherFallback,
-    updatedAt: cached?.timestamp ?? null,
-    isLoading: !cached,
-    isFallback: !cached,
+  const [state, setState] = useState<WeatherState>(() => {
+    const cached = loadCache();
+    return {
+      days: cached?.data ?? weatherFallback,
+      updatedAt: cached?.timestamp ?? null,
+      isLoading: !cached,
+      isFallback: !cached,
+    };
   });
 
   useEffect(() => {
-    if (cached) return;
-
     let cancelled = false;
-    fetch(API_URL)
-      .then(r => r.json())
-      .then((json: Record<string, unknown>) => {
+
+    async function refresh() {
+      const cached = loadCache();
+      if (cached) {
+        setState({ days: cached.data, updatedAt: cached.timestamp, isLoading: false, isFallback: false });
+        return;
+      }
+
+      setState(prev => ({ ...prev, isLoading: true }));
+      try {
+        const days = await fetchWeather();
         if (cancelled) return;
-        const days = parseApiResponse(json);
         const entry: CacheEntry = { data: days, timestamp: Date.now() };
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify(entry)); } catch { /* ignore */ }
-        setState({ days, updatedAt: Date.now(), isLoading: false, isFallback: false });
-      })
-      .catch(() => {
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify(entry)); } catch { /* quota exceeded */ }
+        setState({ days, updatedAt: entry.timestamp, isLoading: false, isFallback: false });
+      } catch {
         if (cancelled) return;
         setState(prev => ({ ...prev, isLoading: false, isFallback: true }));
-      });
+      }
+    }
 
-    return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // App 切換回前景時重新檢查快取是否過期
+    function onVisibilityChange() {
+      if (document.visibilityState === 'visible') refresh();
+    }
+
+    refresh();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
   }, []);
 
   return state;
