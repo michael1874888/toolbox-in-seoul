@@ -1,0 +1,47 @@
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-primary);
+  min-height: var(--top-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: env(safe-area-inset-top, 0px) var(--spacing-lg) 0;
+  padding-bottom: 0;
+  height: calc(var(--top-bar-height) + env(safe-area-inset-top, 0px));
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a3a4a;
+  letter-spacing: 0.5px;
+}
+
+.timeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.timeLabel {
+  font-size: 10px;
+  color: #2a5a6a;
+  opacity: 0.8;
+}
+
+.time {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a3a4a;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown {
+  font-size: 11px;
+  color: #2a5a6a;
+  margin-top: 2px;
+  text-align: right;
+}

@@ -1,0 +1,68 @@
+:root {
+  /* Brand */
+  --color-primary: #B3D9E6;
+  --color-primary-dark: #7AB8CC;
+  --color-primary-light: #D9EEF5;
+
+  /* Card type colors */
+  --color-attraction: #3B82F6;
+  --color-attraction-bg: #EFF6FF;
+  --color-restaurant: #F97316;
+  --color-restaurant-bg: #FFF7ED;
+  --color-shopping: #EC4899;
+  --color-shopping-bg: #FDF2F8;
+  --color-transport: #6B7280;
+  --color-transport-bg: #F9FAFB;
+  --color-snack: #EAB308;
+  --color-snack-bg: #FEFCE8;
+
+  /* Status badge */
+  --color-status-open: #16A34A;
+  --color-status-open-bg: #F0FDF4;
+  --color-status-break: #DC2626;
+  --color-status-break-bg: #FEF2F2;
+  --color-status-closed: #6B7280;
+  --color-status-closed-bg: #F9FAFB;
+
+  /* Neutral */
+  --color-bg: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-text: #111827;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+
+  /* Tab bar */
+  --color-tab-active: #0EA5E9;
+  --color-tab-inactive: #9CA3AF;
+  --tab-bar-height: 64px;
+  --top-bar-height: 52px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadow */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+
+  /* Typography */
+  --font-zh: 'Noto Sans TC', sans-serif;
+  --font-kr: 'Noto Sans KR', sans-serif;
+
+  /* Max width */
+  --max-content-width: 480px;
+
+  /* Animation */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+}

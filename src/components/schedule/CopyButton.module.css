@@ -1,0 +1,23 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--color-tab-active);
+  background: var(--color-primary-light);
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn:active {
+  opacity: 0.7;
+}
+
+.copied {
+  color: var(--color-status-open);
+  background: var(--color-status-open-bg);
+}
