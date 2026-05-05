@@ -16,7 +16,7 @@ function formatTime(ts: number | null): string {
 }
 
 export function CurrencyConverter() {
-  const { rate, updatedAt, isFallback } = useExchangeRate();
+  const { rate, updatedAt, isFallback, isLoading } = useExchangeRate();
   const [krwToTwd, setKrwToTwd] = useState(true);
   const [input, setInput] = useState('');
 
@@ -36,7 +36,11 @@ export function CurrencyConverter() {
 
       <div className={styles.dirRow}>
         <span className={styles.dirLabel}>{fromLabel} → {toLabel}</span>
-        <button className={styles.swapBtn} onClick={() => { setKrwToTwd(v => !v); setInput(''); }}>
+        <button
+          className={styles.swapBtn}
+          aria-label="切換換算方向"
+          onClick={() => { setKrwToTwd(v => !v); setInput(''); }}
+        >
           ⇆
         </button>
       </div>
@@ -45,8 +49,9 @@ export function CurrencyConverter() {
         <span className={styles.currency}>{krwToTwd ? '₩' : 'NT$'}</span>
         <input
           className={styles.input}
-          type="number"
-          inputMode="numeric"
+          type="text"
+          inputMode="decimal"
+          pattern="[0-9]*"
           placeholder="輸入金額"
           value={input}
           onChange={e => setInput(e.target.value)}
@@ -69,12 +74,9 @@ export function CurrencyConverter() {
       </div>
 
       <div className={styles.meta}>
-        1 TWD ≈ {rate.toFixed(2)} KRW
-        {isFallback
-          ? '（預設匯率）'
-          : updatedAt
-            ? `｜匯率更新於 ${formatTime(updatedAt)}`
-            : ''}
+        {isLoading
+          ? '匯率更新中...'
+          : `1 TWD ≈ ${rate.toFixed(2)} KRW${isFallback ? '（預設匯率）' : updatedAt ? `｜更新於 ${formatTime(updatedAt)}` : ''}`}
       </div>
     </div>
   );

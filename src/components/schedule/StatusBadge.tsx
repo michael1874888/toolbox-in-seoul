@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import type { RestaurantStatus } from '../../types';
 import styles from './StatusBadge.module.css';
 
@@ -5,17 +6,12 @@ interface StatusBadgeProps {
   status: RestaurantStatus;
 }
 
-const STATUS_CONFIG: Record<RestaurantStatus, { label: string; className: string }> = {
-  open: { label: '● 營業中', className: styles.open },
-  break: { label: '⚠️ 目前休息中', className: styles.break },
-  closed: { label: '● 已打烊', className: styles.closed },
-};
-
 export function StatusBadge({ status }: StatusBadgeProps) {
-  const config = STATUS_CONFIG[status];
-  return (
-    <span className={`${styles.badge} ${config.className}`}>
-      {config.label}
+  if (status === 'open') return <span className={`${styles.badge} ${styles.open}`}>● 營業中</span>;
+  if (status === 'break') return (
+    <span className={`${styles.badge} ${styles.break}`}>
+      <AlertTriangle size={11} aria-hidden="true" /> 目前休息中
     </span>
   );
+  return <span className={`${styles.badge} ${styles.closed}`}>● 已打烊</span>;
 }

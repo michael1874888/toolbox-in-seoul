@@ -47,8 +47,11 @@ export function DayTabs({ activeDay, onDayChange }: DayTabsProps) {
               className={`${styles.tab}${isActive ? ` ${styles.active}` : ''}${isToday ? ` ${styles.today}` : ''}`}
               onClick={() => onDayChange(day)}
             >
-              <span className={styles.dayNum}>Day {day}</span>
-              <span className={styles.dateStr}>{date} {weekday}{isToday ? ' ●' : ''}</span>
+              <span className={styles.dayNum}>
+                Day {day}
+                {isToday && <span className={styles.todayBadge} aria-label="今天">今</span>}
+              </span>
+              <span className={styles.dateStr}>{date} {weekday}</span>
             </button>
           );
         })}

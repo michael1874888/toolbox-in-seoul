@@ -3,11 +3,22 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  transition: box-shadow var(--transition-normal);
+  position: relative;
 }
 
-.card:active {
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow: var(--shadow-card-hover);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.card:active::after {
+  opacity: 1;
 }
 
 @media (hover: hover) {
@@ -38,13 +49,22 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   min-height: 64px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  color: inherit;
 }
 
 .typeIcon {
-  font-size: 22px;
   flex-shrink: 0;
   width: 28px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
 }
 
 .headerMain {
@@ -119,7 +139,8 @@
   flex: 1;
   font-size: 13px;
   color: var(--color-text);
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .krText {
@@ -128,6 +149,9 @@
 }
 
 .hoursBreak {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   color: var(--color-status-break);
   font-weight: 600;
 }
@@ -147,7 +171,7 @@
 
 .rating {
   font-size: 13px;
-  color: #F59E0B;
+  color: var(--color-rating);
 }
 
 .tipsSection {
@@ -157,9 +181,18 @@
 }
 
 .tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
   font-size: 12px;
   color: var(--color-text-secondary);
   line-height: 1.5;
+}
+
+.tipIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--color-rating);
 }
 
 .actions {
@@ -172,7 +205,7 @@
 .websiteLink {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 8px 12px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
@@ -200,3 +233,9 @@
 .card.attraction .body { border-top-color: var(--color-attraction-bg); }
 .card.restaurant .body { border-top-color: var(--color-restaurant-bg); }
 .card.shopping .body   { border-top-color: var(--color-shopping-bg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .body { animation: none; }
+  .chevron { transition: none; }
+  .card { transition: none; }
+}

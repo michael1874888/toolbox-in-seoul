@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+import { Landmark, Utensils, ShoppingBag, Train, Cookie, AlertTriangle, Lightbulb, Globe } from 'lucide-react';
 import type { ScheduleItem, CardType } from '../../types';
 import { useKoreaTime } from '../../hooks/useKoreaTime';
 import { getRestaurantStatus } from '../../utils/restaurantStatus';
@@ -7,12 +9,12 @@ import { NaverMapLink } from './NaverMapLink';
 import { SubItemList } from './SubItemList';
 import styles from './ScheduleCard.module.css';
 
-const TYPE_ICON: Record<CardType, string> = {
-  attraction: '🏛️',
-  restaurant: '🍽️',
-  shopping: '🛍️',
-  transport: '🚃',
-  snack: '🍰',
+const TYPE_ICON: Record<CardType, ReactElement> = {
+  attraction: <Landmark size={22} />,
+  restaurant: <Utensils size={22} />,
+  shopping: <ShoppingBag size={22} />,
+  transport: <Train size={22} />,
+  snack: <Cookie size={22} />,
 };
 
 interface ScheduleCardProps {
@@ -29,7 +31,7 @@ export function ScheduleCard({ item, isExpanded, onToggle }: ScheduleCardProps) 
 
   return (
     <article className={`${styles.card} ${styles[item.type]}`}>
-      <div className={styles.header} onClick={onToggle} role="button" aria-expanded={isExpanded}>
+      <button className={styles.header} onClick={onToggle} aria-expanded={isExpanded}>
         <span className={styles.typeIcon}>{TYPE_ICON[item.type]}</span>
         <div className={styles.headerMain}>
           <div className={styles.timeRange}>{item.time_start} – {item.time_end}</div>
@@ -39,7 +41,7 @@ export function ScheduleCard({ item, isExpanded, onToggle }: ScheduleCardProps) 
           {status && <StatusBadge status={status} />}
           <span className={`${styles.chevron}${isExpanded ? ` ${styles.open}` : ''}`}>▼</span>
         </div>
-      </div>
+      </button>
 
       {isExpanded && (
         <div className={styles.body}>
@@ -73,7 +75,7 @@ export function ScheduleCard({ item, isExpanded, onToggle }: ScheduleCardProps) 
                 <span>{item.hours}</span>
                 {item.break_start && item.break_end && (
                   <div className={styles.hoursBreak}>
-                    ⚠️ {item.break_start}–{item.break_end} 休息
+                    <AlertTriangle size={13} aria-hidden="true" /> {item.break_start}–{item.break_end} 休息
                   </div>
                 )}
               </div>
@@ -107,7 +109,10 @@ export function ScheduleCard({ item, isExpanded, onToggle }: ScheduleCardProps) 
           {item.tips && item.tips.length > 0 && (
             <div className={styles.tipsSection}>
               {item.tips.map((tip, i) => (
-                <div key={i} className={styles.tip}>💡 {tip}</div>
+                <div key={i} className={styles.tip}>
+                  <Lightbulb size={13} aria-hidden="true" className={styles.tipIcon} />
+                  {tip}
+                </div>
               ))}
             </div>
           )}
@@ -130,7 +135,7 @@ export function ScheduleCard({ item, isExpanded, onToggle }: ScheduleCardProps) 
                 rel="noopener noreferrer"
                 className={styles.websiteLink}
               >
-                🌐 官方網站
+                <Globe size={14} aria-hidden="true" /> 官方網站
               </a>
             )}
           </div>

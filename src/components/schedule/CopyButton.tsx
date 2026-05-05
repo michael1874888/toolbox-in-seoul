@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 import styles from './CopyButton.module.css';
 
 interface CopyButtonProps {
@@ -36,7 +37,9 @@ export function CopyButton({ text, label = '複製' }: CopyButtonProps) {
       onClick={handleCopy}
       aria-label={`複製 ${text}`}
     >
-      {copied ? '✓ 已複製' : `📋 ${label}`}
+      {copied
+        ? <><Check size={12} aria-hidden="true" /> 已複製</>
+        : <><Copy size={12} aria-hidden="true" /> {label}</>}
     </button>
   );
 }

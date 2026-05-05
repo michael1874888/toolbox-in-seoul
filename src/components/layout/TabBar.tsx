@@ -1,17 +1,19 @@
+import type { ReactElement } from 'react';
+import { ClipboardList, CalendarDays, Plane, Wrench } from 'lucide-react';
 import type { TabId } from '../../types';
 import styles from './TabBar.module.css';
 
 interface TabConfig {
   id: TabId;
-  icon: string;
+  icon: ReactElement;
   label: string;
 }
 
 const TABS: TabConfig[] = [
-  { id: 'checklist', icon: '📋', label: '行前' },
-  { id: 'schedule', icon: '📅', label: '行程' },
-  { id: 'info', icon: '✈️', label: '資訊' },
-  { id: 'tools', icon: '🔧', label: '工具' },
+  { id: 'checklist', icon: <ClipboardList size={22} />, label: '行前' },
+  { id: 'schedule', icon: <CalendarDays size={22} />, label: '行程' },
+  { id: 'info', icon: <Plane size={22} />, label: '資訊' },
+  { id: 'tools', icon: <Wrench size={22} />, label: '工具' },
 ];
 
 interface TabBarProps {

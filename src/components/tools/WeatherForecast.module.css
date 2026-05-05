@@ -66,18 +66,18 @@
 .tempHigh {
   font-size: 15px;
   font-weight: 700;
-  color: #DC2626;
+  color: var(--color-temp-high);
 }
 
 .tempLow {
   font-size: 13px;
-  color: #2563EB;
+  color: var(--color-temp-low);
   margin-left: 4px;
 }
 
 .precip {
   font-size: 11px;
-  color: #2563EB;
+  color: var(--color-temp-low);
   margin-top: 2px;
 }
 
@@ -135,7 +135,7 @@
 
 .hourPrecip {
   font-size: 10px;
-  color: #2563EB;
+  color: var(--color-temp-low);
 }
 
 .meta {
@@ -144,4 +144,9 @@
   color: var(--color-text-muted);
   text-align: right;
   border-top: 1px solid var(--color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hourlyGrid { animation: none; }
+  .chevron { transition: none; }
 }

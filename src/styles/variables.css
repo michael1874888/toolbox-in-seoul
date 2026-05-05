@@ -62,6 +62,11 @@
   /* Max width */
   --max-content-width: 480px;
 
+  /* Semantic extras */
+  --color-rating: #F59E0B;
+  --color-temp-high: #DC2626;
+  --color-temp-low: #2563EB;
+
   /* Animation */
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
