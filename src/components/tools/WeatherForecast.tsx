@@ -45,7 +45,7 @@ export function WeatherForecast() {
                   <span className={styles.tempHigh}>{day.temp_max}°</span>
                   <span className={styles.tempLow}>{day.temp_min}°</span>
                 </div>
-                <div className={styles.precip}>☂ {day.precip_prob}%</div>
+                <div className={styles.precip}>☂ {day.precip_prob != null ? `${day.precip_prob}%` : '—'}</div>
                 <div className={styles.weatherText}>{weatherCodeToText(day.weather_code)}</div>
               </div>
               <span className={`${styles.chevron}${isOpen ? ` ${styles.open}` : ''}`}>▼</span>
@@ -58,7 +58,7 @@ export function WeatherForecast() {
                     <div className={styles.hourTime}>{h.time}</div>
                     <span className={styles.hourEmoji}>{weatherCodeToEmoji(h.weather_code)}</span>
                     <div className={styles.hourTemp}>{h.temp}°</div>
-                    <div className={styles.hourPrecip}>{h.precip_prob}%</div>
+                    <div className={styles.hourPrecip}>{h.precip_prob != null ? `${h.precip_prob}%` : '—'}</div>
                   </div>
                 ))}
               </div>

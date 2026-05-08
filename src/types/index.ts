@@ -85,7 +85,7 @@ export interface WeatherDay {
   date: string;
   temp_max: number;
   temp_min: number;
-  precip_prob: number;
+  precip_prob: number | null;
   weather_code: number;
   hourly?: WeatherHour[];
 }
@@ -93,6 +93,6 @@ export interface WeatherDay {
 export interface WeatherHour {
   time: string;
   temp: number;
-  precip_prob: number;
+  precip_prob: number | null;
   weather_code: number;
 }

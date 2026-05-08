@@ -2,16 +2,14 @@ import { useState, useEffect } from 'react';
 import type { WeatherDay, WeatherHour } from '../types';
 import { weatherFallback } from '../data/weather-fallback';
 
-const CACHE_KEY = 'seoul-weather-v2';
+const CACHE_KEY = 'seoul-weather-v3';
 const CACHE_TTL_MS = 3 * 60 * 60 * 1000;
 
-// jma_seamless = JMA 無縫合體模型，東亞降雨預測精度優於 ECMWF/GFS 全球模型
 const API_URL =
   'https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.978' +
   '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode' +
   '&hourly=temperature_2m,precipitation_probability,weathercode' +
-  '&timezone=Asia%2FSeoul&start_date=2026-05-09&end_date=2026-05-13' +
-  '&models=jma_seamless';
+  '&timezone=Asia%2FSeoul&start_date=2026-05-09&end_date=2026-05-13';
 
 interface CacheEntry {
   data: WeatherDay[];
@@ -39,10 +37,11 @@ function parseApiResponse(json: Record<string, unknown>): WeatherDay[] {
     const dayHours: WeatherHour[] = [];
     (hourly.time as string[]).forEach((t, hi) => {
       if (t.startsWith(date)) {
+        const precip = hourly.precipitation_probability[hi];
         dayHours.push({
           time: t.slice(11, 16),
           temp: Math.round(hourly.temperature_2m[hi] as number),
-          precip_prob: hourly.precipitation_probability[hi] as number,
+          precip_prob: precip != null ? (precip as number) : null,
           weather_code: hourly.weathercode[hi] as number,
         });
       }
@@ -51,7 +50,9 @@ function parseApiResponse(json: Record<string, unknown>): WeatherDay[] {
       date,
       temp_max: Math.round(daily.temperature_2m_max[di] as number),
       temp_min: Math.round(daily.temperature_2m_min[di] as number),
-      precip_prob: daily.precipitation_probability_max[di] as number,
+      precip_prob: daily.precipitation_probability_max[di] != null
+        ? (daily.precipitation_probability_max[di] as number)
+        : null,
       weather_code: daily.weathercode[di] as number,
       hourly: dayHours,
     };
